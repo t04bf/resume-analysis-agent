@@ -1,0 +1,13 @@
+### 健康检查
+GET http://localhost:8080/api/resume-agent/health
+
+### 分析简历
+POST http://localhost:8080/api/resume-agent/analyze
+Content-Type: application/json
+
+{
+  "candidateName": "张三",
+  "targetPosition": "Java 后端开发工程师",
+  "resumeText": "张三，本科，3年Java后端开发经验。熟悉Spring Boot、MyBatis、MySQL、Redis、RabbitMQ、Elasticsearch。曾负责招聘系统和订单系统开发，参与简历解析、职位搜索、订单支付、缓存优化、消息异步处理等模块。熟悉接口设计、数据库设计、慢SQL优化和分布式锁。",
+  "jobDescription": "招聘Java后端开发工程师，要求熟悉Spring Boot、MySQL、Redis、消息队列，具备接口设计、数据库优化和高并发系统经验。加分项：有招聘、电商、支付、搜索系统经验。"
+}

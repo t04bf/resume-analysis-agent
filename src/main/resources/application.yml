@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: resume-analysis-agent
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+agent:
+  llm:
+    # mock: 本地模拟结果，不需要 API Key
+    # openai-compatible: 调用兼容 OpenAI /chat/completions 的模型服务
+    provider: mock
+    base-url: https://api.openai.com/v1
+    api-key: ${OPENAI_API_KEY:}
+    model: gpt-4o-mini
+    temperature: 0.2
+    max-tokens: 2000
+    timeout-seconds: 60
