@@ -12,6 +12,7 @@ import com.example.resumeagent.dto.CandidateProfile;
 import com.example.resumeagent.dto.InterviewQuestion;
 import com.example.resumeagent.dto.JobProfile;
 import com.example.resumeagent.dto.MatchScore;
+import com.example.resumeagent.util.InputQualityEvaluator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class ResumeAnalysisService {
     private final MatchScoringAgent matchScoringAgent;
     private final InterviewQuestionAgent interviewQuestionAgent;
     private final ReportAgent reportAgent;
+    private final InputQualityEvaluator inputQualityEvaluator;
 
     public AnalyzeResumeResponse analyze(AnalyzeResumeRequest request) {
         CandidateProfile candidateProfile = resumeParserAgent.parse(request);
@@ -35,6 +37,7 @@ public class ResumeAnalysisService {
         MatchScore matchScore = matchScoringAgent.score(candidateProfile, jobProfile, request);
         List<InterviewQuestion> questions = interviewQuestionAgent.generate(candidateProfile, jobProfile, matchScore, request);
         AnalysisReport report = reportAgent.generate(candidateProfile, jobProfile, matchScore, questions, request);
+        int inputQualityScore = inputQualityEvaluator.score(request);
 
         return AnalyzeResumeResponse.builder()
                 .analysisId(UUID.randomUUID().toString())
@@ -44,6 +47,8 @@ public class ResumeAnalysisService {
                 .matchScore(matchScore)
                 .interviewQuestions(questions)
                 .report(report)
+                .inputQualityScore(inputQualityScore)
+                .authenticityNotice("本结果基于候选人提交文本与模型推断生成，不能替代背调和技术面试，请对关键经历做追问核验。")
                 .build();
     }
 }
